@@ -10,13 +10,13 @@ $app->get('/[{name}]', function (Request $request, Response $response, array $ar
     $this->logger->info("Slim-Skeleton '/' route");
 
     // Render index view
-    return $this->view->render($response, 'index.phtml', $args);
-    //return $this->renderer->render($response, 'index.phtml', $args);
+    return $this->view->render($response, 'home.twig', $args);
+    //return $this->renderer->render($response, 'home.twig', $args);
 });
 */
 
 
-$app->get('/', 'HomeController:index'); 
+$app->get('/', 'HomeController:index')->setName('home'); 
 
 $app->get('/auth/signup', 'AuthController:getSignUp')->setName('auth.signup');
-$app->get('/auth/signup', 'AuthController:postSignUp');
+$app->post('/auth/signup', 'AuthController:postSignUp');

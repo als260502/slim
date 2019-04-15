@@ -2,6 +2,7 @@
 use App\Controller\HomeController;
 use Slim\Views\PhpRenderer;
 use App\Controller\Auth\AuthController;
+use App\Validation\Validator;
 
 // DIC configuration
 
@@ -15,11 +16,20 @@ $container['renderer'] = function ($c) {
 
 $container['view'] = function($container){
     $settings =  $container->get('settings')['renderer'];
-    $view  = new PhpRenderer($settings['view'], [
+    $view  = new \Slim\Views\Twig($settings['view'], [
         'cache' => false,
     ]);
+
+    $view->addExtension(new Slim\Views\TwigExtension(
+        $container->router,
+        $container->request->getUri()
+    ));
     
     return $view;
+};
+
+$container['validator'] = function($container){
+    return new Validator();
 };
 
 //Controllers
