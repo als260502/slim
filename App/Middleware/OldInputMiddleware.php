@@ -2,26 +2,25 @@
 /**
  * Created by PhpStorm.
  * User: Andre
- * Date: 15/04/2019
- * Time: 15:29
+ * Date: 16/04/2019
+ * Time: 10:58
  */
 
 namespace App\Middleware;
 
 
-class ValidationErrorMiddleware extends Middleware
+class OldInputMiddleware extends Middleware
 {
 
     public function __invoke($request, $response, $next)
     {
 
-        $this->container->view->getEnvironment()->addGlobal('errors', @$_SESSION['errors']);
+        $this->container->view->getEnvironment()->addGlobal('old', @$_SESSION['old']);
 
-        unset($_SESSION['errors']);
+        $_SESSION['old'] = $request->getParams();
 
         $response = $next($request, $response);
 
         return $response;
     }
-
 }

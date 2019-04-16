@@ -1,8 +1,8 @@
 <?php
 use App\Controller\HomeController;
-use Slim\Views\PhpRenderer;
 use App\Controller\Auth\AuthController;
 use App\Validation\Validator;
+use Respect\Validation\Validator as v;
 
 // DIC configuration
 
@@ -12,6 +12,14 @@ $container = $app->getContainer();
 $container['renderer'] = function ($c) {
     $settings = $c->get('settings')['renderer'];
     return new Slim\Views\PhpRenderer($settings['template_path']);
+};
+
+$container['auth'] = function ($container){
+    return new App\Auth\Auth;
+};
+
+$container['flash'] = function($container){
+    return new Slim\Flash\Messages;
 };
 
 $container['view'] = function($container){
@@ -24,6 +32,13 @@ $container['view'] = function($container){
         $container->router,
         $container->request->getUri()
     ));
+
+    $view->getEnvironment()->addGlobal('auth', [
+        'check' => $container->auth->check(),
+        'user' => $container->auth->user(),
+    ]);
+
+    $view->getEnvironment()->addGlobal('flash', $container->flash);
     
     return $view;
 };
@@ -41,6 +56,14 @@ $container['AuthController'] = function ($container)
 {
     return new AuthController($container);
 };
+$container['PasswordController'] = function ($container)
+{
+    return new \App\Controller\Auth\PasswordController($container);
+};
+
+
+
+
 
 // monolog
 $container['logger'] = function ($c) {
@@ -61,3 +84,12 @@ $container['db'] = function ($container) use ( $capsule ) {
      return $capsule;
 
 };
+
+$container['csrf'] = function($container){
+  return new \Slim\Csrf\Guard();
+};
+
+
+
+v::with('App\\Validation\\Rules\\');
+

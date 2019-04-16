@@ -20,10 +20,11 @@ return [
         'displayErrorDetails' => true, // set to false in production
         'db' =>[
             'driver'    => 'mysql',
-            'host'      => 'npinfo.dlinkddns.com',
+            //'host'      => 'npinfo.dlinkddns.com',
+            'host'      => 'localhost',
             'database'  => 'db_teste',
-            'username'  => 'gambiarra',
-            'password'  => 'alsandre.alsana',
+            'username'  => 'root',
+            'password'  => '',
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',

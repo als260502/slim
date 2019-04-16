@@ -3,12 +3,13 @@
 namespace App\Controller;
 
 
-class HomeController extends BaseController {
+class HomeController extends BaseController
+{
 
     public function index($request, $response, $args)
     {
 
-            $this->view->render($response, 'home.twig');
+        $this->view->render($response, 'home.twig');
 
     }
 
